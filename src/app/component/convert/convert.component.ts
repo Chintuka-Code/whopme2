@@ -17,15 +17,14 @@ export class ConvertComponent implements OnInit {
   input: any;
   output: any;
   showBtn: boolean = false;
+  response: any;
 
   getConvert() {
     this.getConvert_service.getConvertType().subscribe((res: any) => {
       this.data = res;
-
       this.data.map((info) => {
         this.support.includes(info.group) ? '' : this.support.push(info.group);
       });
-
       console.log(this.support);
     });
   }
@@ -56,10 +55,11 @@ export class ConvertComponent implements OnInit {
       formdata.append('type', 'convert');
       formdata.append('group', this.input.group);
       this.getConvert_service.convert(formdata).subscribe((res: any) => {
-        console.log(res);
+        this.response = res.job;
+        this.getConvert_service.export().subscribe((ress) => {
+          console.log(ress);
+        });
       });
-    } else {
-      console.log('hello');
     }
   }
 
